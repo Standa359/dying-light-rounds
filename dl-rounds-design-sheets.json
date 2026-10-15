@@ -1,0 +1,67 @@
+{
+  "_status": "DRAFT design sheets. Nothing here is built, tested or checked against the installed games yet. Cells marked verified:false must be confirmed from the real DW folder / ROUNDS folder before any code is generated from them.",
+  "mashup": {
+    "pitch": "Normal Dying Light. Every level-up also offers a pick-1-of-3 ROUNDS card that stacks for the rest of the run.",
+    "host": {"slug": "dying-light", "role": "primary", "modFolder": "{game}/DW"},
+    "companion": {"slug": "custom-rounds", "role": "companion", "folderToken": "{game:custom-rounds}", "reads": ["card names", "card art", "card descriptions"], "shipsAnyROUNDSFiles": false},
+    "mode": "solo",
+    "firstMinute": "Play Dying Light as usual. First level-up shows three ROUNDS cards; pick one and keep going.",
+    "v0.1Scope": {"cards": 20, "draw": 3, "pick": 1, "stacking": true, "coop": false, "persistAcrossSaves": "same save slot"}
+  },
+  "sheet_cards": {
+    "columns": ["id", "roundsCardName", "rarityWeight", "dlStat", "perStack", "maxStacks", "tradeoffStat", "tradeoffPerStack", "verified"],
+    "note": "roundsCardName is the lookup key into the player's own ROUNDS install (name + art + text read at runtime/install, never shipped). Names are from memory and must be matched against the installed files. dlStat/perStack are my Dying Light design values.",
+    "rows": [
+      ["c01", "Tank",            10, "maxHealth",          0.15, 4, "moveSpeed",         -0.03, false],
+      ["c02", "Glass Cannon",     6, "meleeDamage",        0.25, 3, "maxHealth",         -0.10, false],
+      ["c03", "Leech",            8, "healOnHitPct",       0.03, 4, null,                 null, false],
+      ["c04", "Phoenix",          2, "extraRevive",        1,    1, null,                 null, false],
+      ["c05", "Quick Reload",     8, "weaponSwingSpeed",   0.08, 4, null,                 null, false],
+      ["c06", "Thruster",         8, "jumpHeight",         0.10, 3, null,                 null, false],
+      ["c07", "Poison",           7, "dotOnHit",           2.0,  3, null,                 null, false],
+      ["c08", "Defender",         8, "damageReduction",    0.05, 4, null,                 null, false],
+      ["c09", "Empower",          7, "nextHitBonus",       0.20, 3, null,                 null, false],
+      ["c10", "Barrage",          5, "comboLength",        1,    2, "swingDamage",       -0.05, false],
+      ["c11", "Demonic Pact",     4, "xpGainPct",          0.15, 3, "maxHealth",         -0.10, false],
+      ["c12", "Parasite",         5, "healOnKill",         5,    4, null,                 null, false],
+      ["c13", "Scavenger",        7, "weaponDurability",   0.15, 4, null,                 null, false],
+      ["c14", "Healing Field",    4, "regenPerSec",        0.5,  3, null,                 null, false],
+      ["c15", "Static Field",     4, "nearbyDamagePerSec", 1.0,  3, null,                 null, false],
+      ["c16", "Shockwave",        4, "landingStunRadius",  0.5,  2, null,                 null, false],
+      ["c17", "Supernova",        3, "killBurstDamage",    10,   2, null,                 null, false],
+      ["c18", "Combustion",       4, "fireDotOnHit",       1.5,  3, null,                 null, false],
+      ["c19", "Radar Shot",       5, "enemyHighlightSec",  1.0,  3, null,                 null, false],
+      ["c20", "Teleport",         2, "dodgeDistance",      0.5,  2, "staminaCostDodge",   0.10, false]
+    ]
+  },
+  "sheet_hooks": {
+    "columns": ["id", "what", "candidateRoute", "verified", "openQuestion"],
+    "rows": [
+      ["h01", "Detect player level-up",            "DW script (.scr) override or pak data hook",          false, "Which event/function fires on level-up in Dying Light's scripts?"],
+      ["h02", "Draw 3 random weighted cards",       "script logic using sheet_cards.rarityWeight",         false, "Scripting RNG available?"],
+      ["h03", "Show pick-1-of-3 screen",            "Scaleform GFx UI in a pak or reuse an existing menu", false, "Can a new screen be added from the DW folder, or only edit existing ones?"],
+      ["h04", "Apply stat changes",                 "player stat/modifier scripts",                        false, "Which dlStat names map to real engine stats?"],
+      ["h05", "Persist picks per save",             "script save data or sidecar file",                    false, "Does the script layer have save storage?"],
+      ["h06", "Read ROUNDS card name/art/text",     "Melty file mapping from {game:custom-rounds} at install", false, "ROUNDS is Unity: where do card assets live and in what form?"],
+      ["h07", "Test mode for Melty",                "recipe test.checks + validate_recipe code",           false, "Needs validate_recipe output in the mod's language"]
+    ]
+  },
+  "sheet_listing": {
+    "title": "Dying Light: Round Cards",
+    "tagline": "Every level-up, pick a ROUNDS card.",
+    "description": "Play Dying Light as normal. Each time you level up you also choose one of three ROUNDS cards that stack for the rest of your run: tankier, nastier, faster, or stranger. You need both games installed; card names and art come from your own ROUNDS copy.",
+    "credits": "TO CONFIRM",
+    "license": "TO CONFIRM",
+    "remix": "TO CONFIRM"
+  },
+  "preflight": {
+    "unfilledOrUnverified": [
+      "sheet_cards: all 20 rows verified=false (ROUNDS names unmatched, dlStat names unmapped to engine stats)",
+      "sheet_hooks: h01-h07 all unverified",
+      "sheet_listing: credits, license, remix unset",
+      "No real gameplay screenshot yet",
+      "Melty game_info / search_mashups / one_click_check not run (no connection from this chat)"
+    ],
+    "buildAllowed": false
+  }
+}
